@@ -1,0 +1,21 @@
+{
+  "name": "allergy-alert-dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd ./allergy-allert && ionic serve",
+    "qwe" : "ionic start allergy-alert blank"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ApexCaptain/Allergy-Alert/issues"
+  },
+  "homepage": "https://github.com/ApexCaptain/Allergy-Alert#readme",
+  "devDependencies": {
+    "cordova": "^10.0.0",
+    "ionic": "^5.4.16"
+  }
+}
