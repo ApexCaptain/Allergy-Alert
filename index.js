@@ -1,7 +1,7 @@
 
 const exec = require('child_process').exec
 const path = require('path')
-const rootPath = path.normalize(`${__dirname}`)
+const rootPath = path.normalize(`${__dirname}`).replace(" ", "\\ ")
 
 const runPromisifiedCommand = async (cmd, showLog = true) => {
     return new Promise((resolve, reject) => {

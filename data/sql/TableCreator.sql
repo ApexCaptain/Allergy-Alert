@@ -1,3 +1,5 @@
+DROP TABLE Food;
+
 CREATE TABLE Food(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name text UNIQUE,
@@ -21,7 +23,3 @@ CREATE TABLE Food(
     sulfite BOOLEAN DEFAULT false,
     pine_nut BOOLEAN DEFAULT false
 );
-
-SELECT * FROM Food;
-
-insert into Food (name)
