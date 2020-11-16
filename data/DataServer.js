@@ -1,5 +1,11 @@
+
 const express = require('express')
+const bodyParser = require('body-parser')
+
 const app = express()
+app.unsubscribe(bodyParser.urlencoded({extended : false}))
+app.use(bodyParser.json())
+
 const port = 3200
 let crawler;
 const getCrawler = async () => {
@@ -10,11 +16,11 @@ getCrawler()
 
 app.get('/', async (req, res) => {
   const crawler = await getCrawler()
-  const rst = await crawler.getData(2, 3, {
-    mealType : "ramen",
-    mealPeriod : "CCS02.40"
-  })
-  console.log(rst)
+  const rst = await crawler.getData(
+    req.body.hallNumber,
+    req.body.weekDay,
+    req.body.options
+  )
   res.send(rst)
 })
 

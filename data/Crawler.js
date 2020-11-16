@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer')
+const sqlite3 = require('sqlite3')
+const { KoconutArray } = require('koconut')
 
 const menus = {
     ramen : [
@@ -88,6 +90,7 @@ class Crawler {
 
     page
     currentMealPeriod = mealPeriod.Launch
+    database
 
     static async getInstance() {
         if(!instance)  {
@@ -113,21 +116,56 @@ class Crawler {
         hallNumber,
         weekDay,
         options = {
-            mealType : 'remen',
+            mealType : 'ramen',
             mealPeriod : mealPeriod.Launch
         }
     ) {
+        let dataToReturn
         switch(hallNumber) {
             case 1 :
-                return menus[options.mealType].map(eachPair => {
+                dataToReturn = menus[options.mealType].map(eachPair => {
                     return {
                         menu : [eachPair[0]],
                         price : eachPair[1]
                     }
                 })
+                break
             case 2 :
-                return await this.crawl(weekDay, options.mealPeriod)
+                dataToReturn = await this.crawl(weekDay, options.mealPeriod)
+                break
         }
+        const resultArray = new Array()
+        for(const eachRow of dataToReturn) {
+            const mealSet = {
+                menus : new Array(),
+                price : eachRow.price
+            }
+            await KoconutArray
+                    .from(eachRow.menu)
+                    .onEach(eachMenu => new Promise(resolve => {
+                        this.database.get(`
+                            SELECT * FROM Food
+                            WHERE name = ?
+                        `,
+                        [eachMenu],
+                        (err, rows) => {
+                            let eachMeal = {
+                                name : eachMenu
+                            }
+                            if(rows) {
+                                delete rows.id
+                                delete rows.name
+                                for(const eachRef in rows) rows[eachRef] = !!rows[eachRef]
+                                eachMeal = {...eachMeal, ...rows}
+                            }
+                            mealSet.menus.push(eachMeal)
+                            resolve()
+                        })
+                    }))
+                    .process()
+            resultArray.push(mealSet)
+        }
+        return resultArray
     }
 
     async changeMealPeriod(
@@ -148,9 +186,9 @@ class Crawler {
 
     async crawl(
         weekDay,
-        mealPeriod
+        passedMealPeriod
     ) {
-        await this.changeMealPeriod(mealPeriod)
+        await this.changeMealPeriod(passedMealPeriod)
 
         const tableFrame = await (await this.page.$('html > frameset > frame:nth-child(2)')).contentFrame()
 
@@ -158,9 +196,8 @@ class Crawler {
             const rst = Array.from(document.querySelectorAll(`body > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(${weekDay + 2}) > td:nth-child(${weekDay == 1 ? 4 : 3}) > table > tbody > tr > td`))
             return rst.map(rst => rst.innerText).filter(eachMenu => !eachMenu.includes('included'))
         }, weekDay)
-
         let price = 0
-        if(mealPeriod == mealPeriod.Launch) {
+        if(passedMealPeriod == mealPeriod.Launch) {
             price = menu.length == 0 ? 0 : await tableFrame.$eval(`body > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(${weekDay + 2}) > td:nth-child(${weekDay == 1 ? 5 : 4})`, el => {
                 return parseInt(el.innerHTML.trim())
             })
@@ -176,7 +213,10 @@ class Crawler {
 
     }
 
-    constructor() {}
+    constructor() {
+        this.database = new sqlite3.Database("./AllergenFood.sqlite", sqlite3.OPEN_READWRITE)
+    }
+    
 
 }
 
