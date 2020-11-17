@@ -1,9 +1,8 @@
 import React, { Component } from "react"
 import {
-    HallNumber
+    HallNumber, MealType, MealPeriod
 } from "../reducers/HallNumberReducer"
 import './HallSelector.css'
-
 
 interface HallSelectorProps {
     onSelected : (hallNumber : HallNumber) => void | Promise<void>,
@@ -15,9 +14,12 @@ enum HallClass {
     DEACTIVATED = "deactive"
 }
 
-
-
 export class HallSelectorComponent extends Component<HallSelectorProps> {
+
+    constructor(props : HallSelectorProps) {
+        super(props)
+        this.props.onSelected(this.props.currentHallNumber)
+    }
 
     public render(): JSX.Element {
         return (
@@ -28,9 +30,9 @@ export class HallSelectorComponent extends Component<HallSelectorProps> {
                             <div
                                 key={eachHall.toString()}
                                 className={this.props.currentHallNumber === eachHall ? HallClass.ACTIVATED : HallClass.DEACTIVATED}
-                                onClick={async (_) => {
+                                onClick={async (event) => {
+                                    if((event.target as any).className === HallClass.ACTIVATED) return
                                     this.props.onSelected(eachHall)
-
                                 }}
                             >제 {eachHall} 학생 회관
                     </div>

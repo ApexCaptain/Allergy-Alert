@@ -80,7 +80,7 @@ const menus = {
 
 const mealPeriod = {
     Launch : "CCS02.20", 
-    LaunchCorse : "CCS02.40"
+    LaunchCourse : "CCS02.40"
 }
 
 let instance
@@ -155,7 +155,13 @@ class Crawler {
                             if(rows) {
                                 delete rows.id
                                 delete rows.name
-                                for(const eachRef in rows) rows[eachRef] = !!rows[eachRef]
+                                console.log(rows)
+                                for(const eachRef in rows) {
+                                    const stringBool = rows[eachRef]
+                                    if(stringBool == "FALSE") rows[eachRef] = false
+                                    else rows[eachRef] = true
+                                }
+                                console.log(rows)
                                 eachMeal = {...eachMeal, ...rows}
                             }
                             mealSet.menus.push(eachMeal)
@@ -214,7 +220,7 @@ class Crawler {
     }
 
     constructor() {
-        this.database = new sqlite3.Database("./AllergenFood.sqlite", sqlite3.OPEN_READWRITE)
+        this.database = new sqlite3.Database(`${__dirname}/AllergenFood.sqlite`, sqlite3.OPEN_READWRITE)
     }
     
 

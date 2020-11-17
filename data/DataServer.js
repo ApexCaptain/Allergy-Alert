@@ -5,6 +5,11 @@ const bodyParser = require('body-parser')
 const app = express()
 app.unsubscribe(bodyParser.urlencoded({extended : false}))
 app.use(bodyParser.json())
+app.use((req,res,next) => {
+  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 
 const port = 3200
 let crawler;
@@ -14,7 +19,8 @@ const getCrawler = async () => {
 }
 getCrawler()
 
-app.get('/', async (req, res) => {
+app.post('/', async (req, res) => {
+  
   const crawler = await getCrawler()
   const rst = await crawler.getData(
     req.body.hallNumber,
@@ -22,6 +28,7 @@ app.get('/', async (req, res) => {
     req.body.options
   )
   res.send(rst)
+
 })
 
 app.listen(port, () => {
