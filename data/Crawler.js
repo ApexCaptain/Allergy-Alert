@@ -102,7 +102,7 @@ class Crawler {
 
     async initialize() {
         const browser = await puppeteer.launch({
-            headless : false
+            headless : true
         })
         this.page = await browser.newPage()
         await this.page.setViewport({

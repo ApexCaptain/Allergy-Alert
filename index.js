@@ -15,5 +15,7 @@ const runPromisifiedCommand = async (cmd, showLog = true) => {
         })
     })
 }
+console.log("Starting SQLITE Database Server...")
 runPromisifiedCommand(`node ${rootPath}/data/DataServer.js`)
-runPromisifiedCommand(`npm start`)
+console.log("Starting React Application Server. ")
+runPromisifiedCommand(`react-scripts start`)
