@@ -13,15 +13,15 @@
 ## 소스코드 받기
 
 - Finder에서 혹은 바탕화면에 애플리케이션의 소스코드를 클론 할 디렉토리 생성 (Control + 우 클릭)
-    ![SC1](ReadmeRes/screenshot_1.png)
+    ![SC1](ReadMeRes/screenshot_1.png)
 
 - 디렉토리 명은 원하는 대로 지정
 
-    ![SC2](ReadmeRes/screenshot_2.png)
+    ![SC2](ReadMeRes/screenshot_2.png)
 
 - 디렉토리에서 Terminal 실행 (Control + 우 클릭)
 
-    ![SC3](ReadmeRes/screenshot_3.png)
+    ![SC3](ReadMeRes/screenshot_3.png)
 
 - 터미널 창에서 다음의 명령어를 순서대로 입력 `注) Node.js와 Git이 반드시 설치되어 있어야 합니다!`
 
