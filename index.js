@@ -1,6 +1,7 @@
 
 const exec = require('child_process').exec
 const path = require('path')
+const fs = require('fs')
 const rootPath = path.normalize(`${__dirname}`).replace(" ", "\\ ")
 
 const runPromisifiedCommand = async (cmd, showLog = true) => {
@@ -18,4 +19,5 @@ const runPromisifiedCommand = async (cmd, showLog = true) => {
 console.log("Starting SQLITE Database Server...")
 runPromisifiedCommand(`node ${rootPath}/data/DataServer.js`)
 console.log("Starting React Application Server. ")
+fs.unlinkSync("./tsconfig.json")
 runPromisifiedCommand(`react-scripts start`)
