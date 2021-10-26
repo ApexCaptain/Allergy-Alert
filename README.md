@@ -1,5 +1,15 @@
 # Allergy Alert
 
+## Docker
+
+- DockerHub : https://hub.docker.com/repository/docker/ayteneve93/allergy-alert
+- 실행법 :
+  ```bash
+    docker pull ayteneve93/allergy-alert:1.0.0
+    docker create -p 3000:3000 --name allergy -it ayteneve93/allergy-alert:1.0.0
+    docker start allergy
+  ```
+
 ## 사전 설치 (Mac OS 기준)
 
 - Node.js

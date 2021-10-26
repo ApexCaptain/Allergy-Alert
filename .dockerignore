@@ -1,0 +1,11 @@
+.git
+.cache
+./commands
+/node_modules
+/ReadMeRes
+/src
+/test
+/tsconfig.json
+*.lock
+Dockerfile
+README.md
